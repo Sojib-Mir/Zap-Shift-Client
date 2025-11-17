@@ -23,10 +23,14 @@ const Navbar = () => {
         <NavLink to={"/coverage"}>Coverage</NavLink>
       </li>
       <li className="font-semibold">
+        <NavLink to={"/send-parcel"}>Send Parcel</NavLink>
+      </li>
+      <li className="font-semibold">
         <NavLink to={"/about"}>About</NavLink>
       </li>
     </>
   );
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">

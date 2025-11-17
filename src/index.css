@@ -7,13 +7,17 @@
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #CAEB66;
-  --color-secondary: #03373D;
+  --color-primary: #caeb66;
+  --color-secondary: #03373d;
 }
 
 body {
   font-family: "Urbanist", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-  background: #EAECED;
+  background: #eaeced;
+}
+
+.menu a.active {
+  @apply bg-sky-500 font-bold;
 }
