@@ -276,14 +276,19 @@ import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "./../../hooks/useAuth";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
     control,
-    formState: { errors },
+    // formState: { errors },
   } = useForm();
+
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
 
   const serviceCenters = useLoaderData();
 
@@ -320,6 +325,8 @@ const SendParcel = () => {
     }
 
     console.log("cost====> ", cost);
+    data.cost = cost;
+
     Swal.fire({
       title: "Agree with the Cost?",
       text: `You will be charged ${cost} taka.`,
@@ -330,13 +337,16 @@ const SendParcel = () => {
       confirmButtonText: "I agree!",
     }).then((result) => {
       if (result.isConfirmed) {
+        // save the parcel info in database
+        axiosSecure.post("/parcels", data).then((res) => {
+          console.log("After saving parcel=====>", res.data);
+        });
+
         // Swal.fire({
         //   title: "Deleted!",
         //   text: "Your file has been deleted.",
         //   icon: "success",
         // });
-
-        
       }
     });
   };
@@ -403,6 +413,7 @@ const SendParcel = () => {
             <label>Sender Name</label>
             <input
               type="text"
+              defaultValue={user?.displayName}
               className="input w-full"
               {...register("senderName")}
               placeholder="Sender Name"
@@ -411,6 +422,7 @@ const SendParcel = () => {
             <label>Sender Email</label>
             <input
               type="email"
+              defaultValue={user?.email}
               className="input w-full"
               {...register("senderEmail")}
               placeholder="Sender Email"

@@ -28,6 +28,14 @@ const Navbar = () => {
       <li className="font-semibold">
         <NavLink to={"/about"}>About</NavLink>
       </li>
+
+      {user && (
+        <>
+          <li className="font-semibold">
+            <NavLink to={"/dashboard/my-parcels"}>My Parcels</NavLink>
+          </li>
+        </>
+      )}
     </>
   );
 
