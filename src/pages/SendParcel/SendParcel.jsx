@@ -289,8 +289,9 @@ const SendParcel = () => {
 
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const serviceCenters = useLoaderData();
   const navigate = useNavigate();
+  
+  const serviceCenters = useLoaderData();
 
   const regionsDuplicate = serviceCenters.map((c) => c.region);
   const regions = [...new Set(regionsDuplicate)];

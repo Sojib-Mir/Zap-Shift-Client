@@ -34,6 +34,7 @@ const router = createBrowserRouter([
             <Rider />
           </PrivetRoute>
         ),
+        loader: () => fetch("/serviceCenters.json").then((res) => res.json()),
       },
       {
         path: "/coverage",

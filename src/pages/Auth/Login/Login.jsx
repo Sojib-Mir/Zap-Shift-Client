@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Login = () => {
   const {
@@ -13,13 +14,25 @@ const Login = () => {
   const { loginUser } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const handleLogin = (data) => {
     console.log(data);
     loginUser(data.email, data.password)
       .then((res) => {
         console.log(res);
-        navigate(location?.state || "/");
+
+        // create user in the database
+        const userInfo = {
+          displayName: res.user.displayName,
+          email: res.user.email,
+          photoURL: res.user.photoURL,
+        };
+
+        axiosSecure.post("/users", userInfo).then((res) => {
+          console.log("user data has been stored", res.data);
+          navigate(location?.state || "/");
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -72,7 +85,7 @@ const Login = () => {
           <p className="text-center font-semibold">
             Don't have an account? Please{" "}
             <Link
-            state={location?.state}
+              state={location?.state}
               to={"/register"}
               className="underline text-blue-500 hover:text-pink-500"
             >
