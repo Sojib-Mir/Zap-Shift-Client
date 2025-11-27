@@ -306,7 +306,7 @@ const SendParcel = () => {
   };
 
   const handleSendParcel = (data) => {
-    console.log(data);
+    // console.log(data);
     const isDocument = data.parcelType === "document";
     const isSameDistrict = data.senderDistrict === data.receiverDistrict;
     const parcelWeight = parseFloat(data.parcelWeight);
@@ -325,7 +325,7 @@ const SendParcel = () => {
       }
     }
 
-    console.log("cost====> ", cost);
+    // console.log("cost====> ", cost);
     data.cost = cost;
 
     Swal.fire({

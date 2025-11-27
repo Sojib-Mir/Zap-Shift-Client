@@ -1,9 +1,12 @@
 import React from "react";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { FaCreditCard } from "react-icons/fa";
+import { FaCreditCard, FaMotorcycle, FaUsers } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
+import useRole from "../hooks/useRole";
 
 const DashboardLayout = () => {
+  const role = useRole();
+
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
@@ -97,7 +100,39 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
 
-            {/* List item */}
+            {role === "admin" && (
+              <>
+                {/* Rider Approved */}
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Approved Rider"
+                    to={"/dashboard/approved-rider"}
+                  >
+                    <FaMotorcycle />
+                    <span className="is-drawer-close:hidden">
+                      Approved Rider
+                    </span>
+                  </NavLink>
+                </li>
+
+                {/* Users Management */}
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Users Management"
+                    to={"/dashboard/users-management"}
+                  >
+                    <FaUsers />
+                    <span className="is-drawer-close:hidden">
+                      Users Management
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* Settings  */}
             <li>
               <button
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
