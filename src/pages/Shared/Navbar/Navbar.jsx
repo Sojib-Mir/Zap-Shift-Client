@@ -78,7 +78,7 @@ const Navbar = () => {
       <div className="navbar-end">
         {user ? (
           <Link onClick={handleLogOut} className="btn">
-            LogOut
+            <span className="font-bold text-amber-500">{user.displayName}</span> LogOut
           </Link>
         ) : (
           <Link to={"/login"} className="btn">

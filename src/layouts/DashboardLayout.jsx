@@ -1,11 +1,14 @@
 import React from "react";
 import { CiDeliveryTruck } from "react-icons/ci";
-import { FaCreditCard, FaMotorcycle, FaUsers } from "react-icons/fa";
+import { FaCreditCard, FaMotorcycle, FaTasks, FaUsers } from "react-icons/fa";
 import { Link, NavLink, Outlet } from "react-router";
 import useRole from "../hooks/useRole";
+import { GrDeliver } from "react-icons/gr";
 
 const DashboardLayout = () => {
-  const role = useRole();
+  const { role } = useRole();
+
+  // console.log("Dashboard layout=========>", role);
 
   return (
     <div className="drawer lg:drawer-open max-w-7xl mx-auto">
@@ -100,6 +103,25 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
 
+            {/* Only Rider Links */}
+            {role === "rider" && (
+              <>
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assigned Deliveries"
+                    to={"/dashboard/assigned-deliveries"}
+                  >
+                    <FaTasks />
+                    <span className="is-drawer-close:hidden">
+                      Assigned Deliveries
+                    </span>
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {/* Admin Only Links */}
             {role === "admin" && (
               <>
                 {/* Rider Approved */}
@@ -112,6 +134,20 @@ const DashboardLayout = () => {
                     <FaMotorcycle />
                     <span className="is-drawer-close:hidden">
                       Approved Rider
+                    </span>
+                  </NavLink>
+                </li>
+
+                {/* Assign Riders */}
+                <li>
+                  <NavLink
+                    className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                    data-tip="Assign Riders"
+                    to={"/dashboard/assign-riders"}
+                  >
+                    <GrDeliver />
+                    <span className="is-drawer-close:hidden">
+                      Assign Riders
                     </span>
                   </NavLink>
                 </li>

@@ -122,7 +122,7 @@ const Rider = () => {
 
           {/* Receiver */}
           <fieldset className="fieldset">
-            <h2 className="text-4xl font-bold">Receiver Details</h2>
+            <h2 className="text-4xl font-bold">More Details</h2>
             {/* Driving License */}
             <label>Driving License</label>
             <input

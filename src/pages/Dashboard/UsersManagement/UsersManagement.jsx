@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { FaUserShield } from "react-icons/fa";
@@ -7,16 +7,17 @@ import Swal from "sweetalert2";
 
 const UsersManagement = () => {
   const axiosSecure = useAxiosSecure();
+  const [searchText, setSearchText] = useState("");
 
   const { data: users = [], refetch } = useQuery({
-    queryKey: ["users"],
+    queryKey: ["users", searchText],
     queryFn: async () => {
-      const res = await axiosSecure.get(`/users`);
+      const res = await axiosSecure.get(`/users?searchText=${searchText}`);
       return res.data;
     },
   });
 
-  const handleMakeUser = (user) => {
+  const handleMakeAdmin = (user) => {
     const roleInfo = { role: "admin" };
 
     Swal.fire({
@@ -29,7 +30,7 @@ const UsersManagement = () => {
       confirmButtonText: "Yes, Promote!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
+        axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
           if (res.data.modifiedCount) {
             refetch();
 
@@ -38,7 +39,7 @@ const UsersManagement = () => {
               icon: "success",
               title: `${user.displayName} has been promoted to Admin 🎉`,
               showConfirmButton: false,
-              timer: 2000,
+              timer: 1000,
             });
           }
         });
@@ -59,7 +60,7 @@ const UsersManagement = () => {
       confirmButtonText: "Yes, remove!",
     }).then((result) => {
       if (result.isConfirmed) {
-        axiosSecure.patch(`/users/${user._id}`, roleInfo).then((res) => {
+        axiosSecure.patch(`/users/${user._id}/role`, roleInfo).then((res) => {
           if (res.data.modifiedCount) {
             refetch();
 
@@ -68,7 +69,7 @@ const UsersManagement = () => {
               icon: "success",
               title: `${user.displayName} is no longer an Admin ❌`,
               showConfirmButton: false,
-              timer: 2000,
+              timer: 1000,
             });
           }
         });
@@ -81,6 +82,34 @@ const UsersManagement = () => {
       <h1 className="text-4xl font-bold text-center text-secondary">
         Manage Users {users.length}
       </h1>
+      <p>search text {searchText}</p>
+      {/* user search */}
+      <label className="input py-2 m-2">
+        <svg
+          className="h-[1em] opacity-50"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <g
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            strokeWidth="2.5"
+            fill="none"
+            stroke="currentColor"
+          >
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </g>
+        </svg>
+        <input
+          onChange={(e) => setSearchText(e.target.value)}
+          type="search"
+          className="grow"
+          placeholder="Users Search"
+        />
+      </label>
+
+      {/* table */}
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
@@ -128,7 +157,7 @@ const UsersManagement = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => handleMakeUser(user)}
+                      onClick={() => handleMakeAdmin(user)}
                       className="btn bg-green-500"
                     >
                       <FaUserShield />

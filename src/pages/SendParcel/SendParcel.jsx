@@ -1,277 +1,3 @@
-// import React from "react";
-// import { useForm, useWatch } from "react-hook-form";
-// import { useLoaderData } from "react-router";
-
-// const SendParcel = () => {
-//   const {
-//     register,
-//     handleSubmit,
-//     control,
-//     formState: { errors },
-//   } = useForm();
-
-//   const serveiceCenters = useLoaderData();
-//   const regionsDuplicate = serveiceCenters.map((c) => c.region);
-//   const regions = [...new Set(regionsDuplicate)];
-//   //   explore useMemo useCallback
-//   const senderRegion = useWatch({ control, name: "senderRegion" });
-//   const receiverRegion = useWatch({ control, name: "receiverRegion" });
-
-//   const districtByRegion = (region) => {
-//     const regionDistricts = serveiceCenters.filter((c) => c.region === region);
-//     const districts = regionDistricts.map((d) => d.district);
-//     return districts;
-//   };
-
-//   const handleSendParcel = (data) => {
-//     console.log(data);
-//   };
-
-//   return (
-//     <div>
-//       <h2 className="text-5xl font-bold my-5 text-secondary text-center md:text-start p-4">
-//         Send A Parcel
-//       </h2>
-
-//       <form onSubmit={handleSubmit(handleSendParcel)} className="mt-12 p-4">
-//         {/* parcel type */}
-//         <div>
-//           <label className="mr-4">
-//             <input
-//               type="radio"
-//               {...register("parcelType")}
-//               value="document"
-//               className="radio"
-//               defaultChecked
-//             />{" "}
-//             Document
-//           </label>
-//           <label className="">
-//             <input
-//               type="radio"
-//               {...register("parcelType")}
-//               value="non-document"
-//               className="radio"
-//             />{" "}
-//             Non-Document
-//           </label>
-//         </div>
-
-//         {/* parcel info: name, weight */}
-//         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 my-8">
-//           {/* Parcel Name */}
-//           <fieldset className="fieldset">
-//             <label className="">Parcel Name</label>
-//             <input
-//               type="text"
-//               className="input w-full"
-//               {...register("parcelName")}
-//               placeholder="Parcel Name"
-//             />
-//           </fieldset>
-
-//           {/* Parcel Weight */}
-//           <fieldset className="fieldset">
-//             <label className="">Parcel Weight (kg)</label>
-//             <input
-//               type="number"
-//               className="input w-full"
-//               {...register("parcelWeight")}
-//               placeholder="Parcel Weight"
-//             />
-//           </fieldset>
-//         </div>
-
-//         {/* tow columns */}
-//         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-//           {/* Sender info */}
-//           <fieldset className="fieldset">
-//             <h2 className="text-4xl font-bold">Sender Details</h2>
-//             {/* Sender Name */}
-//             <label className="">Sender Name</label>
-//             <input
-//               type="text"
-//               className="input w-full"
-//               {...register("senderName")}
-//               placeholder="Sender Name"
-//             />
-
-//             {/* Sender Email */}
-//             <label className="">Sender Email</label>
-//             <input
-//               type="email"
-//               className="input w-full"
-//               {...register("senderEmail")}
-//               placeholder="Sender Email"
-//             />
-
-//             {/* Sender region */}
-//             <fieldset className="fieldset">
-//               <legend className="fieldset-legend">Sender Region</legend>
-//               <select
-//                 {...register("senderRegion")}
-//                 defaultValue="Pick a region"
-//                 className="select w-full"
-//               >
-//                 <option disabled={true}>Pick a region</option>
-//                 {regions.map((r, i) => (
-//                   <option key={i} value={r}>
-//                     {r}
-//                   </option>
-//                 ))}
-//               </select>
-//             </fieldset>
-
-//             {/* Sender District */}
-//             <fieldset className="fieldset">
-//               <legend className="fieldset-legend">Sender District</legend>
-//               <select
-//                 {...register("senderDistrict")}
-//                 defaultValue="Pick a district"
-//                 className="select w-full"
-//               >
-//                 <option disabled={true}>Pick a District</option>
-//                 {districtByRegion(senderRegion).map((r, i) => (
-//                   <option key={i} value={r}>
-//                     {r}
-//                   </option>
-//                 ))}
-//               </select>
-//             </fieldset>
-
-//             {/* Sender Address */}
-//             <label className="mt-2">Sender Address</label>
-//             <input
-//               type="text"
-//               className="input w-full"
-//               {...register("senderAddress")}
-//               placeholder="Sender Address"
-//             />
-
-//             {/* Sender Phone No*/}
-//             <label className="mt-2">Sender Phone No</label>
-//             <input
-//               type="tel"
-//               className="input w-full"
-//               {...register("senderPhoneNo")}
-//               placeholder="Sender Phone No"
-//             />
-
-//             {/* Sender Text Area*/}
-//             <label className="mt-2">Pickup Instruction</label>
-//             <textarea
-//               type="text"
-//               className="textarea w-full"
-//               {...register("pickupInstruction")}
-//               placeholder="Pickup Instruction"
-//             ></textarea>
-//           </fieldset>
-
-//           {/* Receiver info */}
-//           <fieldset className="fieldset">
-//             <h2 className="text-4xl font-bold">Receiver Details</h2>
-//             {/* Render Name */}
-//             <label className="">Receiver Name</label>
-//             <input
-//               type="text"
-//               className="input w-full"
-//               {...register("receiverName")}
-//               placeholder="Receiver Name"
-//             />
-
-//             {/* Receiver Email */}
-//             <label className="">Receiver Email</label>
-//             <input
-//               type="email"
-//               className="input w-full"
-//               {...register("receiverEmail")}
-//               placeholder="Receiver Email"
-//             />
-
-//             {/* Receiver region */}
-//             <fieldset className="fieldset">
-//               <legend className="fieldset-legend">Receiver Region</legend>
-//               <select
-//                 {...register("receiverRegion")}
-//                 defaultValue="Pick a region"
-//                 className="select w-full"
-//               >
-//                 <option disabled={true}>Pick a region</option>
-//                 {regions.map((r, i) => (
-//                   <option key={i} value={r}>
-//                     {r}
-//                   </option>
-//                 ))}
-//               </select>
-//             </fieldset>
-
-//             {/* Receiver District */}
-//             <fieldset className="fieldset">
-//               <legend className="fieldset-legend">Receiver District</legend>
-//               <select
-//                 {...register("receiverDistrict")}
-//                 defaultValue="Pick a district"
-//                 className="select w-full"
-//               >
-//                 <option disabled={true}>Pick a District</option>
-
-//                 {districtByRegion(receiverRegion).map((d, i) => (
-//                   <option key={i} value={d}>
-//                     {d}
-//                   </option>
-//                 ))}
-//               </select>
-//             </fieldset>
-
-//             {/* Receiver Address */}
-//             <label className="mt-2">Receiver Address</label>
-//             <input
-//               type="text"
-//               className="input w-full"
-//               {...register("receiverAddress")}
-//               placeholder="Receiver Address"
-//             />
-
-//             {/* Receiver Phone No*/}
-//             <label className="mt-2">Receiver Phone No</label>
-//             <input
-//               type="tel"
-//               className="input w-full"
-//               {...register("receiverPhoneNo")}
-//               placeholder="Receiver Phone No"
-//             />
-
-//             {/* Receiver District
-//             <label className="mt-2">Your District</label>
-//             <input
-//               type="text"
-//               className="input w-full"
-//               {...register("receiverDistrict")}
-//               placeholder="Your District"
-//             /> */}
-
-//             {/* Receiver Text Area*/}
-//             <label className="mt-2">Delivery Instruction</label>
-//             <textarea
-//               type="text"
-//               className="textarea w-full"
-//               {...register("deliveryInstruction")}
-//               placeholder="Delivery Instruction"
-//             ></textarea>
-//           </fieldset>
-//         </div>
-//         <input
-//           type="submit"
-//           value="Send Parcel"
-//           className="btn btn-primary text-black"
-//         />
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default SendParcel;
-
 import React from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useLoaderData, useNavigate } from "react-router";
@@ -290,7 +16,7 @@ const SendParcel = () => {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
   const navigate = useNavigate();
-  
+
   const serviceCenters = useLoaderData();
 
   const regionsDuplicate = serviceCenters.map((c) => c.region);
@@ -306,7 +32,7 @@ const SendParcel = () => {
   };
 
   const handleSendParcel = (data) => {
-    // console.log(data);
+    console.log(data);
     const isDocument = data.parcelType === "document";
     const isSameDistrict = data.senderDistrict === data.receiverDistrict;
     const parcelWeight = parseFloat(data.parcelWeight);
@@ -325,7 +51,7 @@ const SendParcel = () => {
       }
     }
 
-    // console.log("cost====> ", cost);
+    console.log("cost====> ", cost);
     data.cost = cost;
 
     Swal.fire({
@@ -340,7 +66,7 @@ const SendParcel = () => {
       if (result.isConfirmed) {
         // save the parcel info in database
         axiosSecure.post("/parcels", data).then((res) => {
-          console.log("After saving parcel=====>", res.data);
+          // console.log("After saving parcel=====>", res.data);
           if (res.data.insertedId) {
             navigate("/dashboard/my-parcels");
             Swal.fire({
