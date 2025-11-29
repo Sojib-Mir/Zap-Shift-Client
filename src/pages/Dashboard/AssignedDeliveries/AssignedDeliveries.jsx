@@ -19,7 +19,11 @@ const AssignedDeliveries = () => {
   });
 
   const handleDeliveryStatusUpdate = (parcel, status) => {
-    const statusInfo = { deliveryStatus: status };
+    const statusInfo = {
+      deliveryStatus: status,
+      riderId: parcel.riderId,
+      trackingId: parcel.trackingId,
+    };
 
     let message = `Parcel Status is updated  with ${status
       .split("_")
@@ -69,7 +73,7 @@ const AssignedDeliveries = () => {
                         onClick={() =>
                           handleDeliveryStatusUpdate(parcel, "rider_arriving")
                         }
-                        className="btn btn-secondary text-black font-bold"
+                        className="btn btn-success text-black font-bold"
                       >
                         Accept
                       </button>
@@ -84,22 +88,25 @@ const AssignedDeliveries = () => {
                   )}
                 </td>
                 <td>
-                  <button
-                    onClick={() =>
-                      handleDeliveryStatusUpdate(parcel, "parcel_picked_up")
-                    }
-                    className="btn btn-primary text-black font-bold"
-                  >
-                    Mark as Picked Up
-                  </button>
-                  <button
-                    onClick={() =>
-                      handleDeliveryStatusUpdate(parcel, "parcel_delivered")
-                    }
-                    className="btn btn-primary text-black font-bold ms-2"
-                  >
-                    Mark as Delivered
-                  </button>
+                  {parcel.deliveryStatus === "parcel_picked_up" ? (
+                    <button
+                      onClick={() =>
+                        handleDeliveryStatusUpdate(parcel, "parcel_delivered")
+                      }
+                      className="btn btn-primary text-black font-bold ms-2"
+                    >
+                      Mark as Delivered
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() =>
+                        handleDeliveryStatusUpdate(parcel, "parcel_picked_up")
+                      }
+                      className="btn btn-primary text-black font-bold"
+                    >
+                      Mark as Picked Up
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

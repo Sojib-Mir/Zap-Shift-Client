@@ -5,6 +5,7 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { FaEdit } from "react-icons/fa";
 import { FaMagnifyingGlass, FaTrashCan } from "react-icons/fa6";
 import Swal from "sweetalert2";
+import { Link } from "react-router";
 
 const MyParcels = () => {
   const { user } = useAuth();
@@ -52,6 +53,7 @@ const MyParcels = () => {
       parcelId: parcel._id,
       senderEmail: parcel.senderEmail,
       parcelName: parcel.parcelName,
+      trackingId: parcel.trackingId,
     };
 
     const res = await axiosSecure.post(
@@ -89,7 +91,6 @@ const MyParcels = () => {
                 <th>{index + 1}</th>
                 <td>{parcel.parcelName}</td>
                 <td>{parcel.cost}</td>
-                <td>Blue</td>
                 <td>
                   {parcel.paymentStatus === "paid" ? (
                     <span className="text-green-500">Paid</span>
@@ -105,7 +106,11 @@ const MyParcels = () => {
                   )}
                 </td>
 
-                <td>{parcel.trackingId}</td>
+                <td>
+                  <Link to={`/parcel-track/${parcel.trackingId}`}>
+                    {parcel.trackingId}
+                  </Link>
+                </td>
 
                 <td>{parcel.deliveryStatus}</td>
                 <td>

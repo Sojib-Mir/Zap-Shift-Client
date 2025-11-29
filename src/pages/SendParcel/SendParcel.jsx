@@ -66,7 +66,6 @@ const SendParcel = () => {
       if (result.isConfirmed) {
         // save the parcel info in database
         axiosSecure.post("/parcels", data).then((res) => {
-          // console.log("After saving parcel=====>", res.data);
           if (res.data.insertedId) {
             navigate("/dashboard/my-parcels");
             Swal.fire({
@@ -74,16 +73,10 @@ const SendParcel = () => {
               icon: "success",
               title: "Parcel has been added. Please Pay",
               showConfirmButton: false,
-              timer: 2500,
+              timer: 1000,
             });
           }
         });
-
-        // Swal.fire({
-        //   title: "Deleted!",
-        //   text: "Your file has been deleted.",
-        //   icon: "success",
-        // });
       }
     });
   };
