@@ -2,12 +2,13 @@ import React from "react";
 import useAuth from "../../../hooks/useAuth";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
+import Swal from "sweetalert2";
 
 const AssignedDeliveries = () => {
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
 
-  const { data: parcels = [] } = useQuery({
+  const { data: parcels = [], refetch } = useQuery({
     queryKey: ["parcels", user.email, "driver_assigned"],
     queryFn: async () => {
       const res = await axiosSecure(
@@ -17,10 +18,31 @@ const AssignedDeliveries = () => {
     },
   });
 
-  console.log(parcels);
+  const handleDeliveryStatusUpdate = (parcel, status) => {
+    const statusInfo = { deliveryStatus: status };
+
+    let message = `Parcel Status is updated  with ${status
+      .split("_")
+      .join(" ")}`;
+
+    axiosSecure
+      .patch(`/parcels/${parcel._id}/status`, statusInfo)
+      .then((res) => {
+        if (res.data.modifiedCount) {
+          refetch();
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: message,
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        }
+      });
+  };
   return (
     <div>
-      <h1 className="text-5xl font-bold my-5 text-secondary text-center p-4">
+      <h1 className="text-5xl font-bold my-1 text-secondary text-center p-4">
         Parcels Pending Pickup {parcels.length}
       </h1>
 
@@ -32,7 +54,7 @@ const AssignedDeliveries = () => {
               <th>SL</th>
               <th>Name</th>
               <th>Confirm</th>
-              <th>Favorite Color</th>
+              <th>Other Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -41,14 +63,44 @@ const AssignedDeliveries = () => {
                 <td>{index + 1}</td>
                 <td>{parcel.parcelName}</td>
                 <td>
-                  <button className="btn btn-success text-black font-bold">
-                    Accept
+                  {parcel.deliveryStatus === "driver_assigned" ? (
+                    <>
+                      <button
+                        onClick={() =>
+                          handleDeliveryStatusUpdate(parcel, "rider_arriving")
+                        }
+                        className="btn btn-secondary text-black font-bold"
+                      >
+                        Accept
+                      </button>
+                      <button className="btn btn-warning text-black font-bold ms-2">
+                        Reject
+                      </button>
+                    </>
+                  ) : (
+                    <button className="btn btn-success text-black font-bold">
+                      Accepted
+                    </button>
+                  )}
+                </td>
+                <td>
+                  <button
+                    onClick={() =>
+                      handleDeliveryStatusUpdate(parcel, "parcel_picked_up")
+                    }
+                    className="btn btn-primary text-black font-bold"
+                  >
+                    Mark as Picked Up
                   </button>
-                  <button className="btn btn-warning text-black font-bold ms-2">
-                    Reject
+                  <button
+                    onClick={() =>
+                      handleDeliveryStatusUpdate(parcel, "parcel_delivered")
+                    }
+                    className="btn btn-primary text-black font-bold ms-2"
+                  >
+                    Mark as Delivered
                   </button>
                 </td>
-                <td>Blue</td>
               </tr>
             ))}
           </tbody>
