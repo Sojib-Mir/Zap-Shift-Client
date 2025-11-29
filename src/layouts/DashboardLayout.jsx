@@ -5,6 +5,7 @@ import { Link, NavLink, Outlet } from "react-router";
 import useRole from "../hooks/useRole";
 import { GrDeliver } from "react-icons/gr";
 import { SiGoogletasks } from "react-icons/si";
+import logo from "../assets/logo.png";
 
 const DashboardLayout = () => {
   const { role } = useRole();
@@ -55,10 +56,17 @@ const DashboardLayout = () => {
         <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
           {/* Sidebar content here */}
           <ul className="menu w-full grow">
-            {/* List item */}
+            {/* Home page */}
+            <li>
+              <Link to={"/"}>
+                <img src={logo} alt="" />
+              </Link>
+            </li>
+
+            {/* Dashboard home */}
             <li>
               <Link
-                to={"/"}
+                to={"/dashboard"}
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >

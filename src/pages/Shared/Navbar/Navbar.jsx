@@ -37,6 +37,10 @@ const Navbar = () => {
           <li className="font-semibold">
             <NavLink to={"/dashboard/my-parcels"}>My Parcels</NavLink>
           </li>
+
+          <li className="font-semibold">
+            <NavLink to={"/dashboard"}>Dashboard</NavLink>
+          </li>
         </>
       )}
     </>
@@ -78,7 +82,8 @@ const Navbar = () => {
       <div className="navbar-end">
         {user ? (
           <Link onClick={handleLogOut} className="btn">
-            <span className="font-bold text-amber-500">{user.displayName}</span> LogOut
+            <span className="font-bold text-amber-500">{user.displayName}</span>{" "}
+            LogOut
           </Link>
         ) : (
           <Link to={"/login"} className="btn">
